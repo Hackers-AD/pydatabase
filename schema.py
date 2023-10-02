@@ -13,3 +13,7 @@ class PersonSchema(models.Model):
     email = models.CharField(max_length=100, null=True, blank=True)
     age = models.IntegerField(default=1, null=True, blank=True)
 
+class ProfileSchema(models.Model):
+    id = models.IntegerField(primary=True, default=1, autoincrement=True)
+    image = models.ImageField(upload_to="images/")
+    created_date = models.DateTimeField(auto_now_add=True)

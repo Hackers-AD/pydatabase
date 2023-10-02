@@ -1,7 +1,6 @@
 from pydatabase import DatabaseManage
 import inspect
-from datetime import datetime
-# from PIL import Image
+
 class IntegerField:
     def __init__(self, null=False, blank=False, default=0, help_text="Integer Field", primary=False,
                  autoincrement=False):
@@ -40,6 +39,12 @@ class ImageField:
         self.help_text = help_text
         self.upload_to = upload_to
 
+    def __str__(self):
+        type = f"VARCHAR(255) "
+        null = "NOT NULL " if not self.null else ''
+        upload_to = f"DEFAULT '{self.upload_to}'"
+        return (type + null + upload_to)
+
 class CharField:
     def __init__(self, null=False, blank=False, default='', help_text="Char Field", max_length=100):
         self.null = null
@@ -59,17 +64,27 @@ class DateTimeField:
         self.null = null
         self.blank = blank
         self.help_text = help_text
-        self.auto_now_add = datetime.now() if auto_now_add else auto_now_add
+        self.auto_now_add = auto_now_add
+
+    def __str__(self):
+        type = "DATETIME "
+        null = 'NOT NULL ' if not self.null else ''
+        default = f"DEFAULT CURRENT_TIMESTAMP " if self.auto_now_add else ''
+        return (type + null + default)
 
 class EmailField:
-    def __init__(self, null=False, blank=False, default=0, help_text="Integer Field", primary=False,
+    def __init__(self, null=False, blank=False, default=None, help_text="Integer Field", primary=False,
                  autoincrement=False):
         self.null = null
         self.blank = blank
         self.default = default
         self.help_text = help_text
-        self.primary = primary
-        self.autoincrement = autoincrement
+
+    def __str__(self):
+        type = f'VARCHAR(100) '
+        null = 'NOT NULL ' if not self.null else ''
+        default = f"DEFAULT '{self.default}'" if self.default else ''
+        return (type + null + default)
 
 class Model:
     def __init__(self, *args, **kwargs):
